@@ -1,0 +1,30 @@
+<svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+    </style>
+  </defs>
+  <text
+    x="10"
+    y="70"
+    font-family="Bubblegum Sans, cursive"
+    font-size="70"
+    font-weight="400"
+    fill="#000" /* Default color, can be overridden */
+    style="
+      fill: url(#textGradient); /* Apply gradient */
+      filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.3)); /* Add shadow */
+    "
+  >
+    COGNIFY
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4285F4" />
+      <stop offset="17%" style="stop-color:#EA4335" />
+      <stop offset="33%" style="stop-color:#FBBC05" />
+      <stop offset="50%" style="stop-color:#34A853" />
+      <stop offset="67%" style="stop-color:#EA4335" />
+      <stop offset="83%" style="stop-color:#4285F4" />
+      <stop offset="100%" style="stop-color:#FBBC05" />
+    </linearGradient>
+  </text>
+</svg>
