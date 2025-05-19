@@ -95,8 +95,8 @@ Cognify-project/
 │       └── pages/      # Page-level modules
 ├── server/             # Express + Node backend
 │   └── models/         # Mongoose schemas
-│   └── routes/
-│   └── controllers/        # API endpoints
+│   └── routes/         # API endpoints
+│   └── middleware/       
 └── README.md
 ```
 
