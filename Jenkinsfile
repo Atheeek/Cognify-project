@@ -5,10 +5,6 @@ pipeline {
         nodejs 'NodeJS 18'  // The NodeJS version configured in Jenkins
     }
 
-    environment {
-        // Define environment variables here if needed
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +12,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install Root Dependencies') {
             steps {
                 sh 'npm install'
             }
@@ -24,23 +20,46 @@ pipeline {
 
         stage('Build Frontend') {
             steps {
-                dir('client') {  // if your React app is inside a client folder
+                dir('client') {
+                    sh 'npm install'
                     sh 'npm run build'
                 }
             }
         }
 
-        stage('Run Backend') {
+        stage('Install Backend Dependencies') {
             steps {
-                dir('server') { // if your backend is inside a server folder
-                    // For example, run tests or start server (you can customize)
+                dir('server') {
                     sh 'npm install'
-                    // sh 'npm test' // Optional if you have tests
                 }
             }
         }
 
-        // Add more stages if you want: test, deploy, etc.
+        stage('Run Backend Tests') {
+            steps {
+                dir('server') {
+                    // Optional: Uncomment if you have tests
+                    // sh 'npm test'
+                }
+            }
+        }
+
+        stage('Start Backend') {
+            steps {
+                dir('server') {
+                    // Optional: You can use pm2 or nodemon if needed
+                    sh 'npm start &'
+                }
+            }
+        }
+
+        stage('Start Frontend (Optional)') {
+            steps {
+                dir('client') {
+                    sh 'npm start &'
+                }
+            }
+        }
     }
 
     post {
