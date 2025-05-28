@@ -1,41 +1,28 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS 18'  // Change this to your Jenkins NodeJS installation name
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Debug Workspace') {
             steps {
-                checkout scm
+                bat 'dir /b /s'
             }
         }
 
         stage('Install Dependencies') {
             parallel {
-                stage('Install Server Dependencies') {
+                stage('Install Backend Dependencies') {
                     steps {
-                        dir('server') {
+                        dir('cognify-backend') {
                             bat 'npm install'
                         }
                     }
                 }
-                stage('Install Client Dependencies') {
+                stage('Install Frontend Dependencies') {
                     steps {
-                        dir('client') {
+                        dir('cognify-frontend') {
                             bat 'npm install'
                         }
                     }
-                }
-            }
-        }
-
-        stage('Build Frontend') {
-            steps {
-                dir('client') {
-                    // Vite build for production
-                    bat 'npm run build'
                 }
             }
         }
@@ -44,18 +31,15 @@ pipeline {
             parallel {
                 stage('Start Backend Server') {
                     steps {
-                        dir('server') {
-                            // Use start /b for background process on Windows
-                            bat 'start /b npm start'
+                        dir('cognify-backend') {
+                            bat 'node server.js'
                         }
                     }
                 }
-
-                stage('Start Frontend Server (Optional)') {
+                stage('Start Frontend Server') {
                     steps {
-                        dir('client') {
-                            // Uncomment if you want to run dev server (not recommended in Jenkins)
-                            // bat 'start /b npm run dev'
+                        dir('cognify-frontend') {
+                            bat 'npm run dev'
                         }
                     }
                 }
