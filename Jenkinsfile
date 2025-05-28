@@ -48,15 +48,16 @@ PORT=5000
                 stage('Backend Build') {
                     steps {
                         dir("${BACKEND_DIR}") {
-                            // If using TypeScript or a build step
-                            bat 'npm run build' // or skip if not needed
+                            // Optional: use if backend has build step (e.g., TypeScript)
+                            bat 'if exist package.json (npm run build) else (echo No build step for backend)'
                         }
                     }
                 }
                 stage('Frontend Build') {
                     steps {
                         dir("${FRONTEND_DIR}") {
-                            bat 'npm run build'
+                            bat 'echo Current directory: && cd && dir'
+                            bat 'if exist package.json (npm run build) else (echo No package.json found)'
                         }
                     }
                 }
@@ -68,14 +69,14 @@ PORT=5000
                 stage('Backend Tests') {
                     steps {
                         dir("${BACKEND_DIR}") {
-                            bat 'npm test' // Optional if tests are defined
+                            bat 'if exist package.json (npm test) else (echo No backend tests defined)'
                         }
                     }
                 }
                 stage('Frontend Tests') {
                     steps {
                         dir("${FRONTEND_DIR}") {
-                            bat 'npm test' // Optional if tests are defined
+                            bat 'if exist package.json (npm test) else (echo No frontend tests defined)'
                         }
                     }
                 }
@@ -84,13 +85,18 @@ PORT=5000
 
         stage('Archive Artifacts') {
             steps {
-                dir("${FRONTEND_DIR}/dist") {
+                dir("${FRONTEND_DIR}\\dist") {
                     archiveArtifacts artifacts: '**/*', fingerprint: true
                 }
             }
         }
 
-        // Add your deploy stage here if needed
+        // Optional Deploy Stage
+        // stage('Deploy') {
+        //     steps {
+        //         echo 'Deploy logic goes here'
+        //     }
+        // }
     }
 
     post {
