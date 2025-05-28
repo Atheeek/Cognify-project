@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        BACKEND_DIR = 'cognify-backend'
+        FRONTEND_DIR = 'cognify-frontend'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,16 +15,16 @@ pipeline {
 
         stage('Install Dependencies') {
             parallel {
-                stage('Install Backend Dependencies') {
+                stage('Backend') {
                     steps {
-                        dir('cognify-backend') {
+                        dir("${BACKEND_DIR}") {
                             bat 'npm install'
                         }
                     }
                 }
-                stage('Install Frontend Dependencies') {
+                stage('Frontend') {
                     steps {
-                        dir('cognify-frontend') {
+                        dir("${FRONTEND_DIR}") {
                             bat 'npm install'
                         }
                     }
@@ -27,10 +32,9 @@ pipeline {
             }
         }
 
-        stage('Setup Backend Environment') {
+        stage('Setup Environment') {
             steps {
-                dir('cognify-backend') {
-                    // Create .env file with MongoDB URI and PORT
+                dir("${BACKEND_DIR}") {
                     writeFile file: '.env', text: '''
 MONGO_URI=mongodb://localhost:27017/complain
 PORT=5000
@@ -39,31 +43,66 @@ PORT=5000
             }
         }
 
-        stage('Start Servers') {
+        stage('Build') {
             parallel {
-                stage('Start Backend Server') {
+                stage('Backend Build') {
                     steps {
-                        dir('cognify-backend') {
-                            // Run backend server - Windows doesn't support '&', so use start /B to run in background
-                            bat 'start /B node server.js'
+                        dir("${BACKEND_DIR}") {
+                            // If using TypeScript or a build step
+                            bat 'npm run build' // or skip if not needed
                         }
                     }
                 }
-                stage('Start Frontend Server') {
+                stage('Frontend Build') {
                     steps {
-                        dir('cognify-frontend') {
-                            bat 'start /B npm run dev'
+                        dir("${FRONTEND_DIR}") {
+                            bat 'npm run build'
                         }
                     }
                 }
             }
         }
+
+        stage('Test') {
+            parallel {
+                stage('Backend Tests') {
+                    steps {
+                        dir("${BACKEND_DIR}") {
+                            bat 'npm test' // Optional if tests are defined
+                        }
+                    }
+                }
+                stage('Frontend Tests') {
+                    steps {
+                        dir("${FRONTEND_DIR}") {
+                            bat 'npm test' // Optional if tests are defined
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                dir("${FRONTEND_DIR}/dist") {
+                    archiveArtifacts artifacts: '**/*', fingerprint: true
+                }
+            }
+        }
+
+        // Add your deploy stage here if needed
     }
 
     post {
         always {
             echo 'Cleaning workspace...'
             cleanWs()
+        }
+        success {
+            echo 'CI/CD pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
