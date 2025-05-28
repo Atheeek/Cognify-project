@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Debug Workspace') {
+        stage('Checkout') {
             steps {
-                bat 'dir /b /s'
+                checkout scm
             }
         }
 
@@ -27,19 +27,32 @@ pipeline {
             }
         }
 
-        stage('Start Servers in Parallel') {
+        stage('Setup Backend Environment') {
+            steps {
+                dir('cognify-backend') {
+                    // Create .env file with MongoDB URI and PORT
+                    writeFile file: '.env', text: '''
+MONGO_URI=mongodb://localhost:27017/complain
+PORT=5000
+'''
+                }
+            }
+        }
+
+        stage('Start Servers') {
             parallel {
                 stage('Start Backend Server') {
                     steps {
                         dir('cognify-backend') {
-                            bat 'node server.js'
+                            // Run backend server - Windows doesn't support '&', so use start /B to run in background
+                            bat 'start /B node server.js'
                         }
                     }
                 }
                 stage('Start Frontend Server') {
                     steps {
                         dir('cognify-frontend') {
-                            bat 'npm run dev'
+                            bat 'start /B npm run dev'
                         }
                     }
                 }
