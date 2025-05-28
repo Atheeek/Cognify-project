@@ -14,15 +14,15 @@ pipeline {
 
         stage('Install Root Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Build Frontend') {
             steps {
                 dir('client') {
-                    sh 'npm install'
-                    sh 'npm run build'
+                    bat 'npm install'
+                    bat 'npm run build'
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
         stage('Install Backend Dependencies') {
             steps {
                 dir('server') {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 dir('server') {
                     // Optional: Uncomment if you have tests
-                    // sh 'npm test'
+                    // bat 'npm test'
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 dir('server') {
                     // Optional: You can use pm2 or nodemon if needed
-                    sh 'npm start &'
+                    bat 'start "" cmd /c "npm start"'
                 }
             }
         }
@@ -56,7 +56,7 @@ pipeline {
         stage('Start Frontend (Optional)') {
             steps {
                 dir('client') {
-                    sh 'npm start &'
+                    bat 'start "" cmd /c "npm start"'
                 }
             }
         }
