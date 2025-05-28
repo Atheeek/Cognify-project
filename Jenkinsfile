@@ -43,10 +43,14 @@ PORT=5000
                 stage('Start Backend Server') {
                     steps {
                         dir('cognify-backend') {
-                            // Start backend, save PID in a file
+                            // Start backend server in background and get PID immediately
                             bat '''
-                            start /B node server.js
-                            for /f "tokens=2" %%a in ('tasklist /fi "imagename eq node.exe" /fo csv /nh') do echo %%a > backend.pid
+                            @echo off
+                            start "backend" /B cmd /c "node server.js"
+                            timeout /t 2 /nobreak > nul
+                            for /f "tokens=2 delims=," %%a in ('wmic process where "CommandLine like '%node server.js%'" get ProcessId /format:csv ^| findstr /r /v "^$"') do (
+                              echo %%a > backend.pid
+                            )
                             '''
                         }
                     }
@@ -54,10 +58,14 @@ PORT=5000
                 stage('Start Frontend Server') {
                     steps {
                         dir('cognify-frontend') {
-                            // Start frontend, save PID in a file
+                            // Start frontend server in background and get PID immediately
                             bat '''
-                            start /B npm run dev
-                            for /f "tokens=2" %%a in ('tasklist /fi "imagename eq node.exe" /fo csv /nh') do echo %%a > frontend.pid
+                            @echo off
+                            start "frontend" /B cmd /c "npm run dev"
+                            timeout /t 2 /nobreak > nul
+                            for /f "tokens=2 delims=," %%a in ('wmic process where "CommandLine like '%npm run dev%'" get ProcessId /format:csv ^| findstr /r /v "^$"') do (
+                              echo %%a > frontend.pid
+                            )
                             '''
                         }
                     }
@@ -72,7 +80,7 @@ PORT=5000
                         if (fileExists('backend.pid')) {
                             def backendPid = readFile('backend.pid').trim()
                             echo "Stopping backend PID: ${backendPid}"
-                            bat "taskkill /F /PID ${backendPid}"
+                            bat "taskkill /F /PID ${backendPid} || echo Backend process already stopped."
                         } else {
                             echo "No backend.pid file found."
                         }
@@ -83,7 +91,7 @@ PORT=5000
                         if (fileExists('frontend.pid')) {
                             def frontendPid = readFile('frontend.pid').trim()
                             echo "Stopping frontend PID: ${frontendPid}"
-                            bat "taskkill /F /PID ${frontendPid}"
+                            bat "taskkill /F /PID ${frontendPid} || echo Frontend process already stopped."
                         } else {
                             echo "No frontend.pid file found."
                         }
