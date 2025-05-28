@@ -48,7 +48,7 @@ PORT=5000
                 stage('Backend Build') {
                     steps {
                         dir("${BACKEND_DIR}") {
-                            // Optional: use if backend has build step (e.g., TypeScript)
+                            // If backend has a build script (like TypeScript compilation)
                             bat 'if exist package.json (npm run build) else (echo No build step for backend)'
                         }
                     }
@@ -56,7 +56,6 @@ PORT=5000
                 stage('Frontend Build') {
                     steps {
                         dir("${FRONTEND_DIR}") {
-                            bat 'echo Current directory: && cd && dir'
                             bat 'if exist package.json (npm run build) else (echo No package.json found)'
                         }
                     }
@@ -91,7 +90,7 @@ PORT=5000
             }
         }
 
-        // Optional Deploy Stage
+        // Uncomment and add deploy logic if needed
         // stage('Deploy') {
         //     steps {
         //         echo 'Deploy logic goes here'
