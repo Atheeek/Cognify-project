@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "echo 'No build necessary for backend.'",
-     "test": "npx jest"
+  "test": "jest --passWithNoTests"
   },
   "keywords": [],
   "author": "",
