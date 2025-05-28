@@ -43,14 +43,22 @@ PORT=5000
                 stage('Start Backend Server') {
                     steps {
                         dir('cognify-backend') {
-                            bat 'start /B node server.js'
+                            // Start backend, save PID in a file
+                            bat '''
+                            start /B node server.js
+                            for /f "tokens=2" %%a in ('tasklist /fi "imagename eq node.exe" /fo csv /nh') do echo %%a > backend.pid
+                            '''
                         }
                     }
                 }
                 stage('Start Frontend Server') {
                     steps {
                         dir('cognify-frontend') {
-                            bat 'start /B npm run dev'
+                            // Start frontend, save PID in a file
+                            bat '''
+                            start /B npm run dev
+                            for /f "tokens=2" %%a in ('tasklist /fi "imagename eq node.exe" /fo csv /nh') do echo %%a > frontend.pid
+                            '''
                         }
                     }
                 }
@@ -59,12 +67,28 @@ PORT=5000
 
         stage('Stop Servers') {
             steps {
-                echo 'Stopping backend and frontend servers...'
-                // Kill node and npm processes forcibly to release workspace files
-                bat '''
-                taskkill /F /IM node.exe || echo "No node.exe processes found"
-                taskkill /F /IM npm.exe || echo "No npm.exe processes found"
-                '''
+                dir('cognify-backend') {
+                    script {
+                        if (fileExists('backend.pid')) {
+                            def backendPid = readFile('backend.pid').trim()
+                            echo "Stopping backend PID: ${backendPid}"
+                            bat "taskkill /F /PID ${backendPid}"
+                        } else {
+                            echo "No backend.pid file found."
+                        }
+                    }
+                }
+                dir('cognify-frontend') {
+                    script {
+                        if (fileExists('frontend.pid')) {
+                            def frontendPid = readFile('frontend.pid').trim()
+                            echo "Stopping frontend PID: ${frontendPid}"
+                            bat "taskkill /F /PID ${frontendPid}"
+                        } else {
+                            echo "No frontend.pid file found."
+                        }
+                    }
+                }
             }
         }
     }
