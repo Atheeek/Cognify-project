@@ -30,7 +30,6 @@ pipeline {
         stage('Setup Backend Environment') {
             steps {
                 dir('cognify-backend') {
-                    // Create .env file with MongoDB URI and PORT
                     writeFile file: '.env', text: '''
 MONGO_URI=mongodb://localhost:27017/complain
 PORT=5000
@@ -44,7 +43,6 @@ PORT=5000
                 stage('Start Backend Server') {
                     steps {
                         dir('cognify-backend') {
-                            // Run backend server - Windows doesn't support '&', so use start /B to run in background
                             bat 'start /B node server.js'
                         }
                     }
@@ -56,6 +54,17 @@ PORT=5000
                         }
                     }
                 }
+            }
+        }
+
+        stage('Stop Servers') {
+            steps {
+                echo 'Stopping backend and frontend servers...'
+                // Kill node and npm processes forcibly to release workspace files
+                bat '''
+                taskkill /F /IM node.exe || echo "No node.exe processes found"
+                taskkill /F /IM npm.exe || echo "No npm.exe processes found"
+                '''
             }
         }
     }
