@@ -74,6 +74,12 @@ Cognify is a full-stack, inclusive educational platform designed to support **ch
 
 ---
 
+### 🧩 Games – Shape Sorting  
+![Shape Sorting](./screenshots/shape-sorting.png)  
+*Drag-and-drop game to help children identify and match shapes intuitively.*
+
+---
+
 ### 🗣️ AI Chatbot with Voice  
 ![Chatbot](./screenshots/chatbot.png)  
 *Voice-enabled chatbot that engages children in friendly, responsive conversation.*
