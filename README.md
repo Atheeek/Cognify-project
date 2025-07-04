@@ -48,6 +48,74 @@ Cognify is a full-stack, inclusive educational platform designed to support **ch
 
 ---
 
+## 🖼️ Screenshots
+
+### 🏠 Home Page  
+![Home Page](./screenshots/homepage.png)  
+*A clean and inviting landing page introducing the Cognify platform and its mission.*
+
+---
+
+### 🧠 Learning Module – Alphabets  
+![Alphabet Module](./screenshots/alphabet-module.png)  
+*Interactive alphabet learning with visuals, sound, and level-based progress tracking.*
+
+---
+
+### 🔢 Learning Module – Numbers  
+![Number Module](./screenshots/number-module.png)  
+*Gamified number learning with badges and motivational feedback.*
+
+---
+
+### 🎮 Gamified Learning Page  
+![Gamified Learning](./screenshots/gamified-learning.png)  
+*Engaging games like Shape Sorting, Memory Match, and Colorful Puzzles designed to boost cognitive skills.*
+
+---
+
+### 🗣️ AI Chatbot with Voice  
+![Chatbot](./screenshots/chatbot.png)  
+*Voice-enabled chatbot that engages children in friendly, responsive conversation.*
+
+---
+
+### 🧘 Relaxation – Meditation  
+![Meditation](./screenshots/meditation.png)  
+*Soothing meditation sessions to help children unwind and improve focus.*
+
+---
+
+### 🎨 Relaxation – Drawing  
+![Drawing](./screenshots/drawing.png)  
+*A creative canvas for kids to draw and express themselves freely with colors.*
+
+---
+
+### 📊 Dashboard – User Progress  
+![Dashboard](./screenshots/dashboard.png)  
+*Visual analytics showing module completion, scores, and individual growth.*
+
+---
+
+### 👨‍👩‍👧 Parent Resources  
+![Parent Resources](./screenshots/parents.png)  
+*A section for parents with helpful content, articles, and activity guides.*
+
+---
+
+### 🔒 Login / Signup  
+![Login Page](./screenshots/login.png)  
+*Secure authentication system for children, parents, and admins.*
+
+---
+
+### ⚙️ Admin Dashboard (Upcoming)  
+![Admin Dashboard](./screenshots/admin-dashboard.png)  
+*A management panel for educators and parents to monitor user activity and progress.*
+
+
+
 🚀 Getting Started
 Follow these steps to run the project locally:
 
