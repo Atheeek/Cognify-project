@@ -63,13 +63,13 @@ Cognify is a full-stack, inclusive educational platform designed to support **ch
 ---
 
 ### 🔢 Learning Module – Numbers  
-![Number Module](./screenshots/number-module.png)  
+ 
 *Gamified number learning with badges and motivational feedback.*
 
 ---
 
 ### 🎮 Gamified Learning Page  
-![Gamified Learning](./screenshots/gamified-learning.png)  
+
 *Engaging games like Shape Sorting, Memory Match, and Colorful Puzzles designed to boost cognitive skills.*
 
 ---
@@ -87,7 +87,7 @@ Cognify is a full-stack, inclusive educational platform designed to support **ch
 ---
 
 ### 🧘 Relaxation – Meditation  
-![Meditation](./screenshots/meditation.png)  
+
 *Soothing meditation sessions to help children unwind and improve focus.*
 
 ---
@@ -110,14 +110,8 @@ Cognify is a full-stack, inclusive educational platform designed to support **ch
 
 ---
 
-### 🔒 Login / Signup  
-![Login Page](./screenshots/login.png)  
-*Secure authentication system for children, parents, and admins.*
 
----
-
-### ⚙️ Admin Dashboard (Upcoming)  
-![Admin Dashboard](./screenshots/admin-dashboard.png)  
+### ⚙️ Admin Dashboard (Upcoming)   
 *A management panel for educators and parents to monitor user activity and progress.*
 
 
